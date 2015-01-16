@@ -1,0 +1,37 @@
+{
+  "name": "volo-s3deploy",
+  "version": "0.1.0",
+  "description": "Volo command for syncing a local directory to a Amazon S3 Bucket",
+  "keywords": [
+    "volo",
+    "amazon",
+    "s3",
+    "deployment"
+  ],
+  "author": "Marcus Zanona <zanona@me.com>",
+  "homepage": "https://github.com/zanona/volo-s3deploy",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:zanona/volo-s3deploy.git"
+  },
+  "dependencies": {
+    "s3": "^4.3.1"
+  },
+  "bugs": {
+    "url": "https://github.com/zanona/volo-s3deploy/issues"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "licenses": [
+    {
+      "type": "BSD",
+      "url": "https://github.com/zanona/volo-s3deploy/blob/master/LICENSE"
+    },
+    {
+      "type": "MIT",
+      "url": "https://github.com/zanona/volo-s3deploy/blob/master/LICENSE"
+    }
+  ]
+}
