@@ -1,10 +1,13 @@
-/*global require, module, process*/
-function main(d, v, flags, amazonBucket, deployDir) {
+/*global require, module, process, console*/
+/*eslint no-console:0*/
+module.exports = function(amazonBucket, deployDir) {
 
+    if (!amazonBucket) { return console.log('Missing Amazon Bucket name'); }
     deployDir = deployDir || 'build/';
-    var s3 = require('s3'),
-        Q = v.require('q'),
+    var fs = require('fs'),
         path = require('path'),
+        exec = require('exec-sync'),
+        s3 = require('s3'),
         tmpDir,
         sizeMap = {},
         client = s3.createClient({
@@ -39,33 +42,21 @@ function main(d, v, flags, amazonBucket, deployDir) {
         },
         uploader;
 
-    v.exec('mktemp -dt XXXXXX').then(function (p) {
-        tmpDir = p.replace(/\n/, '');
-        return v.exec('cp -r ' + deployDir  + '* ' + tmpDir);
-    }).then(function () {
-        return Q.all(v.getFilteredFileList(tmpDir, /\.(html|js|css)/).map(function (f) {
-            return v.exec('wc -c <"' + f + '"')
-                .then(function (size) {
-                    sizeMap[f] = size.replace(/\s/g, '');
-                })
-                .then(function () {
-                    return v.exec('gzip -9 ' + f);
-                })
-                .then(function () {
-                    f = f + '.gz';
-                    v.mv(f, f.replace(/\.gz$/, ''));
-                });
-        }));
-    }).done(function () {
-        params.localDir = tmpDir;
-        uploader = client.uploadDir(params);
-        uploader.on('error', d.reject);
-        //on end being triggered before upload finishes
-        //uploader.on('end', function() { d.resolve('Done Uploading'); });
-    });
-}
+    tmpDir = exec('mktemp -dt XXXXXX').replace(/\n/, '');
+    exec('cp -r ' + deployDir  + '* ' + tmpDir);
 
-module.exports = {
-    summary: 'Sync directory to Amazon S3 Bucket',
-    run: main
+    fs.readdirSync(tmpDir).forEach(function (f) {
+        if (!f.match(/\.(html|js|css)$/)) { return; }
+        f = path.resolve(tmpDir, f);
+        var size = exec('wc -c <"' + '/' + f + '"');
+        sizeMap[f] = size.replace(/\s/g, '');
+        exec('gzip -9 ' + f);
+        exec('mv ' + f + '.gz' + ' ' + f);
+    });
+
+    params.localDir = tmpDir;
+    uploader = client.uploadDir(params);
+    uploader.on('error', function (error) { console.error(error);});
+    //on end being triggered before upload finishes
+    //uploader.on('end', function() { d.resolve('Done Uploading'); });
 };
