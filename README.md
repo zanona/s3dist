@@ -1,4 +1,4 @@
-S3Deploy
+S3Dist
 ===
 
 A nodejs module and CLI for deploying

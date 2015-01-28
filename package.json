@@ -1,5 +1,5 @@
 {
-  "name": "s3deploy",
+  "name": "s3dist",
   "version": "0.1.0",
   "description": "A command for syncing a local directory to a Amazon S3 Bucket",
   "keywords": [
@@ -8,14 +8,17 @@
     "deployment"
   ],
   "author": "Marcus Zanona <zanona@me.com>",
-  "homepage": "https://github.com/zanona/s3deploy",
-  "engines": {
-    "node": ">=0.10.0",
-    "npm": ">=2.1.5"
-  },
+  "homepage": "https://github.com/zanona/s3dist",
   "main": "index",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:zanona/s3dist.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zanona/s3dist/issues"
+  },
   "bin": {
-    "s3deploy": "cli.js"
+    "s3dist": "cli.js"
   },
   "dependencies": {
     "exec-sync": "^0.1.6",
@@ -24,21 +27,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:zanona/s3deploy.git"
-  },
-  "bugs": {
-    "url": "https://github.com/zanona/s3deploy/issues"
-  },
   "licenses": [
     {
       "type": "BSD",
-      "url": "https://github.com/zanona/s3deploy/blob/master/LICENSE"
+      "url": "https://github.com/zanona/s3dist/blob/master/LICENSE"
     },
     {
       "type": "MIT",
-      "url": "https://github.com/zanona/s3deploy/blob/master/LICENSE"
+      "url": "https://github.com/zanona/s3dist/blob/master/LICENSE"
     }
   ]
 }
