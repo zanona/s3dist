@@ -1,9 +1,10 @@
 /*global require, module, process, console*/
 /*eslint no-console:0*/
-module.exports = function(amazonBucket, deployDir) {
+module.exports = function(deployDir, amazonBucket) {
 
+    if (!deployDir) { return console.log('Missing source directory'); }
     if (!amazonBucket) { return console.log('Missing Amazon Bucket name'); }
-    deployDir = deployDir || 'build/';
+
     var fs = require('fs'),
         path = require('path'),
         exec = require('exec-sync'),
