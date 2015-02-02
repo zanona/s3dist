@@ -1,9 +1,13 @@
 /*global require, module, process, console*/
 /*eslint no-console:0*/
-module.exports = function(deployDir, amazonBucket) {
+module.exports = function(deployDir, amazonBucket, amazonKey, amazonSecret) {
 
-    if (!deployDir) { return console.log('Missing source directory'); }
-    if (!amazonBucket) { return console.log('Missing Amazon Bucket name'); }
+    amazonKey    = amazonKey    || process.env.AMAZON_KEY;
+    amazonSecret = amazonSecret || process.env.AMAZON_SECRET;
+    if (!deployDir)    { return console.error('Missing source directory'); }
+    if (!amazonBucket) { return console.error('Missing Amazon Bucket name'); }
+    if (!amazonKey)    { return console.error('Missing Amazon Key'); }
+    if (!amazonSecret) { return console.error('Missing Amazon Secret'); }
 
     var fs = require('fs'),
         path = require('path'),
@@ -13,8 +17,8 @@ module.exports = function(deployDir, amazonBucket) {
         sizeMap = {},
         client = s3.createClient({
             s3Options: {
-                accessKeyId: process.env.AMAZON_KEY,
-                secretAccessKey: process.env.AMAZON_SECRET,
+                accessKeyId: amazonKey,
+                secretAccessKey: amazonSecret,
                 region: 'eu-west-1'
             }
         }),
