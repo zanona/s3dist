@@ -1,3 +1,3 @@
 #!/usr/bin/env node
 /*global require, process*/
-require('./')(process.argv[2], process.argv[3]);
+require('./').apply(null, process.argv.splice(2));
