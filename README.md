@@ -10,7 +10,7 @@ a directory to an Amazon S3 Bucket with gzip support and cache-control
 
 ## Usage
 
-    s3dist <SOURCE_DIR> <AMAZON_BUCKET_NAME>
+    s3dist <SOURCE_DIR> <AMAZON_BUCKET_NAME> <AMAZON_KEY> <AMAZON_SECRET>
 
 ## License
 MIT and new BSD.
