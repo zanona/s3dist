@@ -29,14 +29,14 @@ module.exports = function(deployDir, amazonBucket, amazonKey, amazonSecret) {
             getS3Params: function (localFile, stat, callback) {
                 console.log('>', path.relative(tmpDir, localFile));
                 var p = {};
-                if (localFile.match(/\.(html|js|css)/)) {
+                if (localFile.match(/\.(html|js|json|css)/)) {
                     p.ContentEncoding = 'gzip';
                     p.Metadata = { 'raw-content-length': sizeMap[localFile] };
                 }
                 if (localFile.match(/\.(html)/)) {
                     p.CacheControl = 'no-cache';
                 }
-                if (localFile.match(/\.(js|css)/)) {
+                if (localFile.match(/\.(js|json|css)/)) {
                     p.CacheControl = 'max-age=31536000';
                 }
                 if (localFile.match(/\.(jpg|png|gif)/)) {
@@ -51,7 +51,7 @@ module.exports = function(deployDir, amazonBucket, amazonKey, amazonSecret) {
     exec('cp -r ' + deployDir  + '* ' + tmpDir);
 
     fs.readdirSync(tmpDir).forEach(function (f) {
-        if (!f.match(/\.(html|js|css)$/)) { return; }
+        if (!f.match(/\.(html|js|json|css)$/)) { return; }
         f = path.resolve(tmpDir, f);
         var size = exec('wc -c <"' + '/' + f + '"');
         sizeMap[f] = size.replace(/\s/g, '');
