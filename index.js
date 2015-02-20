@@ -11,7 +11,7 @@ module.exports = function(deployDir, amazonBucket, amazonKey, amazonSecret) {
 
     var fs = require('fs'),
         path = require('path'),
-        exec = require('exec-sync'),
+        exec = require('child_process').execSync,
         s3 = require('s3'),
         tmpDir,
         sizeMap = {},
@@ -47,13 +47,13 @@ module.exports = function(deployDir, amazonBucket, amazonKey, amazonSecret) {
         },
         uploader;
 
-    tmpDir = exec('mktemp -dt XXXXXX').replace(/\n/, '');
+    tmpDir = exec('mktemp -dt XXXXXX').toString().replace(/\n/, '');
     exec('cp -r ' + deployDir  + '* ' + tmpDir);
 
     fs.readdirSync(tmpDir).forEach(function (f) {
         if (!f.match(/\.(html|js|json|css)$/)) { return; }
         f = path.resolve(tmpDir, f);
-        var size = exec('wc -c <"' + '/' + f + '"');
+        var size = exec('wc -c <"' + '/' + f + '"').toString();
         sizeMap[f] = size.replace(/\s/g, '');
         exec('gzip -9 ' + f);
         exec('mv ' + f + '.gz' + ' ' + f);
