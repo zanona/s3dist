@@ -14,6 +14,7 @@ module.exports = function (deployDir, amazonBucket, amazonKey, amazonSecret) {
         path = require('path'),
         exec = require('child_process').execSync,
         s3 = require('s3'),
+        gzipList = /\.(html|xml|svg|js|json|css|txt|md)$/,
         tmpDir,
         sizeMap = {},
         client = s3.createClient({
@@ -31,7 +32,7 @@ module.exports = function (deployDir, amazonBucket, amazonKey, amazonSecret) {
                 /*jslint unparam:true*/
                 console.log('>', path.relative(tmpDir, localFile));
                 var p = {};
-                if (localFile.match(/\.(html|js|json|css)/)) {
+                if (localFile.match(gzipList)) {
                     p.ContentEncoding = 'gzip';
                     p.Metadata = { 'raw-content-length': sizeMap[localFile] };
                 }
@@ -53,7 +54,7 @@ module.exports = function (deployDir, amazonBucket, amazonKey, amazonSecret) {
     exec('cp -r ' + deployDir  + '* ' + tmpDir);
 
     fs.readdirSync(tmpDir).forEach(function (f) {
-        if (!f.match(/\.(html|js|json|css)$/)) { return; }
+        if (!f.match(gzipList)) { return; }
         f = path.resolve(tmpDir, f);
         var size = exec('wc -c <"' + '/' + f + '"').toString();
         sizeMap[f] = size.replace(/\s/g, '');
