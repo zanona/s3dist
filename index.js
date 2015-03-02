@@ -38,11 +38,7 @@ module.exports = function (deployDir, amazonBucket, amazonKey, amazonSecret) {
                 }
                 if (localFile.match(/\.(html)/)) {
                     p.CacheControl = 'no-cache';
-                }
-                if (localFile.match(/\.(js|json|css)/)) {
-                    p.CacheControl = 'max-age=31536000';
-                }
-                if (localFile.match(/\.(jpg|png|gif)/)) {
+                } else {
                     p.CacheControl = 'max-age=31536000';
                 }
                 callback(null, p);
