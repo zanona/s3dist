@@ -1,14 +1,15 @@
-/*global require, module, process, console*/
-/*eslint no-console:0*/
-module.exports = function(deployDir, amazonBucket, amazonKey, amazonSecret) {
+/*jslint node:true*/
+module.exports = function (deployDir, amazonBucket, amazonKey, amazonSecret) {
+    'use strict';
 
     amazonKey    = amazonKey    || process.env.AMAZON_KEY;
     amazonSecret = amazonSecret || process.env.AMAZON_SECRET;
-    if (!deployDir)    { return console.error('Missing source directory'); }
+    if (!deployDir) { return console.error('Missing source directory'); }
     if (!amazonBucket) { return console.error('Missing Amazon Bucket name'); }
-    if (!amazonKey)    { return console.error('Missing Amazon Key'); }
+    if (!amazonKey) { return console.error('Missing Amazon Key'); }
     if (!amazonSecret) { return console.error('Missing Amazon Secret'); }
 
+    /*jslint stupid:true*/
     var fs = require('fs'),
         path = require('path'),
         exec = require('child_process').execSync,
@@ -27,6 +28,7 @@ module.exports = function(deployDir, amazonBucket, amazonKey, amazonSecret) {
             deleteRemoved: true,
             s3Params: { Bucket: amazonBucket },
             getS3Params: function (localFile, stat, callback) {
+                /*jslint unparam:true*/
                 console.log('>', path.relative(tmpDir, localFile));
                 var p = {};
                 if (localFile.match(/\.(html|js|json|css)/)) {
@@ -61,7 +63,9 @@ module.exports = function(deployDir, amazonBucket, amazonKey, amazonSecret) {
 
     params.localDir = tmpDir;
     uploader = client.uploadDir(params);
-    uploader.on('error', function (error) { console.error(error);});
+    uploader.on('error', function (error) {
+        console.error(error);
+    });
     //on end being triggered before upload finishes
     //uploader.on('end', function() { d.resolve('Done Uploading'); });
 };
