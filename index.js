@@ -2,8 +2,8 @@
 module.exports = function (deployDir, amazonBucket, amazonKey, amazonSecret) {
     'use strict';
 
-    amazonKey    = amazonKey    || process.env.AMAZON_KEY;
-    amazonSecret = amazonSecret || process.env.AMAZON_SECRET;
+    amazonKey    = amazonKey    || process.env.AWS_ACCESS_KEY_ID;
+    amazonSecret = amazonSecret || process.env.AWS_SECRET_ACCESS_KEY;
     if (!deployDir) { return console.error('Missing source directory'); }
     if (!amazonBucket) { return console.error('Missing Amazon Bucket name'); }
     if (!amazonKey) { return console.error('Missing Amazon Key'); }
